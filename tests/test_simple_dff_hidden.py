@@ -15,10 +15,11 @@ LANGUAGE = os.getenv("HDL_TOPLEVEL_LANG", "verilog").lower().strip()
 async def dff_simple_test(dut):
     """Test that d propagates to q"""
 
+    dut.rst_n.value = 1
     dut.d.value = 0
 
     clock = Clock(dut.clk, 10, unit="us")
-    clock.start(start_high=False)
+    cocotb.start_soon(clock.start(start_high=False))
 
     await RisingEdge(dut.clk)
 
